@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+// Generate paths for Astro static routing
+export async function getStaticPaths() {
+	const notes = await getCollection('notes');
+	return notes.map(note => ({
+		params: { slug: note.id },
+		props: { note },
+	}));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+
+<Layout title={`${note.data.title} | JavaScript Basics`} currentSlug={note.id} description={note.data.description}>
+	<Content />
+</Layout>

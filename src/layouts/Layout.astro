@@ -1,0 +1,202 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+	currentSlug?: string;
+}
+
+const {
+	title,
+	description = "Master the fundamentals of JavaScript with interactive code play and clean developer explanations.",
+	currentSlug = "",
+} = Astro.props;
+
+import "../styles/global.css";
+import { getCollection } from 'astro:content';
+
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+// Fetch notes collections dynamically
+const notes = await getCollection('notes');
+const sortedNotes = notes.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+// Grouping notes by category
+const categories: Record<string, typeof notes> = {};
+for (const note of sortedNotes) {
+	const cat = note.data.category || 'Core Syntax';
+	if (!categories[cat]) {
+		categories[cat] = [];
+	}
+	categories[cat].push(note);
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.png`} />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header>
+			<div class="container nav-container">
+				<a href={baseUrl} class="logo-wrapper">
+					<div class="logo-icon">JS</div>
+					<div class="logo-text">JavaScript<span>Basics</span></div>
+				</a>
+			</div>
+		</header>
+
+		<!-- Fixed Sidebar Layout wrapped surrounding dynamic slot contents -->
+		<div class="docs-layout">
+			<!-- Sticky Sidebar Navigation Column -->
+			<aside class="docs-sidebar">
+				{Object.keys(categories)
+					.filter(catName => catName === 'Getting Started')
+					.map(catName => (
+						<div class="sidebar-category">
+							<h4>{catName}</h4>
+							<ul>
+								{categories[catName].map(noteItem => (
+									<li>
+										<a
+											href={`${baseUrl}${noteItem.id}`}
+											class={`sidebar-link ${currentSlug === noteItem.id ? 'active' : ''}`}
+										>
+											{noteItem.data.title}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					))}
+			</aside>
+
+			<!-- Scrollable Note Content Viewport -->
+			<main class="docs-content">
+				<slot />
+			</main>
+		</div>
+
+		<footer>
+			<div class="container">
+				<p>
+					© {new Date().getFullYear()} JavaScript Basics. Built for developers
+					eager to learn.
+				</p>
+			</div>
+		</footer>
+
+		<!-- Script block to handle interaction in client side -->
+		<script is:inline>
+			// Helper to escape HTML characters
+			function escapeHtml(text) {
+				return String(text)
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
+			}
+
+			function initializeSandboxes() {
+				const sandboxes = document.querySelectorAll('.integrated-sandbox');
+				
+				sandboxes.forEach(sandbox => {
+					// Guard duplicate binding
+					if (sandbox.classList.contains('sandbox-ready')) return;
+					sandbox.classList.add('sandbox-ready');
+
+					const defaultCodeCompressed = sandbox.getAttribute('data-code') || '';
+					const defaultCode = defaultCodeCompressed.replace(/\\n/g, '\n');
+					const editor = sandbox.querySelector('.sandbox-editor');
+					const output = sandbox.querySelector('.sandbox-output');
+					const btnRun = sandbox.querySelector('.btn-run');
+					const btnReset = sandbox.querySelector('.btn-reset');
+					
+					// Set default code
+					editor.value = defaultCode;
+					
+					// Auto-resize editor textarea based on lines
+					editor.style.height = 'auto';
+					editor.style.height = (editor.scrollHeight + 10) + 'px';
+
+					// Track line updates to resize height dynamically
+					editor.addEventListener('input', () => {
+						editor.style.height = 'auto';
+						editor.style.height = (editor.scrollHeight + 10) + 'px';
+					});
+
+					// Reset handler
+					btnReset.addEventListener('click', () => {
+						editor.value = defaultCode;
+						output.innerHTML = 'Console empty...';
+						editor.style.height = 'auto';
+						editor.style.height = (editor.scrollHeight + 10) + 'px';
+					});
+
+					// Live run handler
+					btnRun.addEventListener('click', () => {
+						const code = editor.value;
+						output.innerHTML = '';
+						let logs = [];
+
+						const originalConsoleLog = console.log;
+						const originalConsoleError = console.error;
+
+						console.log = function() {
+							const args = Array.prototype.slice.call(arguments);
+							const formattedArgs = args.map(item => {
+								if (typeof item === 'object') {
+									try {
+										return JSON.stringify(item, null, 2);
+									} catch(e) {
+										return String(item);
+									}
+								}
+								return String(item);
+							}).join(' ');
+							logs.push({ type: 'log', message: formattedArgs });
+							originalConsoleLog.apply(console, arguments);
+						};
+
+						console.error = function() {
+							const args = Array.prototype.slice.call(arguments);
+							const formattedArgs = args.map(item => String(item)).join(' ');
+							logs.push({ type: 'error', message: formattedArgs });
+							originalConsoleError.apply(console, arguments);
+						};
+
+						try {
+							const executor = new Function(code);
+							executor();
+
+							if (logs.length === 0) {
+								output.innerHTML = '<span class="console-info">Code executed successfully, but returned no logs. Try running a console.log()!</span>';
+							} else {
+								output.innerHTML = logs.map(l => {
+									if (l.type === 'error') {
+										return `<span class="console-error">❌ ${escapeHtml(l.message)}</span>`;
+									}
+									return `<span class="console-log">${escapeHtml(l.message)}</span>`;
+								}).join('\n');
+							}
+						} catch(err) {
+							output.innerHTML = `<span class="console-error">❌ Execution Error: ${escapeHtml(err.message)}</span>`;
+						} finally {
+							console.log = originalConsoleLog;
+							console.error = originalConsoleError;
+						}
+					});
+				});
+			}
+
+			// Run on DOM loaded
+			document.addEventListener('DOMContentLoaded', initializeSandboxes);
+		</script>
+	</body>
+</html>
