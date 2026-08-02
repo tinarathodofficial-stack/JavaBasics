@@ -1,17 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 const notes = await getCollection('notes');
 const sortedNotes = notes.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
 if (sortedNotes.length > 0) {
-	return Astro.redirect(`/${sortedNotes[0].id}`);
+	return Astro.redirect(`${baseUrl}${sortedNotes[0].id}`);
 }
 ---
 <html>
 	<head>
 		<title>Loading Notes...</title>
-		<meta http-equiv="refresh" content={`0;url=/${sortedNotes[0]?.id || ''}`} />
+		<meta http-equiv="refresh" content={`0;url=${baseUrl}${sortedNotes[0]?.id || ''}`} />
 	</head>
 	<body>
 		<p>Redirecting to first chapter...</p>
