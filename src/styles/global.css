@@ -145,6 +145,46 @@ header .nav-container {
   color: var(--primary);
 }
 
+/* Sidebar Toggle Header Button */
+.sidebar-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1000;
+}
+
+.sidebar-toggle span {
+  width: 100%;
+  height: 3px;
+  background: var(--text-primary);
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.sidebar-toggle.open span:nth-child(1) {
+  transform: rotate(45deg);
+}
+.sidebar-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+.sidebar-toggle.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .sidebar-toggle {
+    display: flex;
+  }
+}
+
 /* Hero Section */
 .hero {
   padding: 8rem 0 5rem 0;
@@ -1213,12 +1253,24 @@ footer p {
 
 @media (max-width: 900px) {
   .docs-sidebar {
-    position: relative;
-    top: 0;
-    height: auto;
+    position: fixed;
+    top: 80px; /* offset for main navbar */
+    right: -300px; /* hide by default, float from right */
+    bottom: 0;
+    height: calc(100vh - 80px);
+    width: 280px;
+    z-index: 99;
+    background: rgba(9, 10, 15, 0.98);
+    backdrop-filter: blur(12px);
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
     border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 2rem;
+    border-bottom: none;
+    padding: 3rem 2rem;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .docs-sidebar.open {
+    right: 0;
   }
 }
 

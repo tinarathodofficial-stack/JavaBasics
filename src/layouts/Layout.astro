@@ -48,6 +48,11 @@ for (const note of sortedNotes) {
 					<div class="logo-icon">JS</div>
 					<div class="logo-text">JavaScript<span>Basics</span></div>
 				</a>
+				<button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle Sidebar">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
 			</div>
 		</header>
 
@@ -195,8 +200,23 @@ for (const note of sortedNotes) {
 				});
 			}
 
+			function initializeSidebarToggle() {
+				const toggleBtn = document.getElementById('sidebar-toggle');
+				const sidebar = document.querySelector('.docs-sidebar');
+
+				if (toggleBtn && sidebar) {
+					toggleBtn.addEventListener('click', () => {
+						toggleBtn.classList.toggle('open');
+						sidebar.classList.toggle('open');
+					});
+				}
+			}
+
 			// Run on DOM loaded
-			document.addEventListener('DOMContentLoaded', initializeSandboxes);
+			document.addEventListener('DOMContentLoaded', () => {
+				initializeSandboxes();
+				initializeSidebarToggle();
+			});
 		</script>
 	</body>
 </html>
