@@ -1,11 +1,69 @@
 ---
-title: "2. Variables & Scope"
+title: "1. Variables & Constants"
 description: "Differences between var, let, const and block scoping rules."
-order: 2
-category: "Core Syntax"
+order: 1
+category: "Variables & Data Types"
 ---
 
-Variables serve as container values. JavaScript exposes three keywords to define variables: `var`, `let`, and `const`.
+# Understanding Variables and Constants
+
+> **Note:** Before diving into advanced features like `let` and `const` introduced in modern ES6+ (and later) versions of JavaScript, let us first build a solid foundation by understanding what variables and constants actually are.
+
+## What is a Variable?
+
+A **variable** is a container used to store data in a program. It allows us to save a value under a name so that we can use or modify that value later in the program.
+
+For example:
+
+<div class="integrated-sandbox" data-code="var age = 25;\nconsole.log(&quot;Age is:&quot;, age);">
+    <div class="sandbox-header">
+        <div class="sandbox-title">Snippet Sandbox: Basic Variable</div>
+    </div>
+    <textarea class="sandbox-editor" spellcheck="false"></textarea>
+    <div class="sandbox-controls">
+        <button class="btn btn-secondary btn-reset">Reset</button>
+        <button class="btn btn-primary btn-run">Run Code</button>
+    </div>
+    <div class="sandbox-output">Console empty...</div>
+</div>
+
+Here:
+* `age` is the variable name.
+* `25` is the value stored inside it.
+
+You can think of a variable as a labeled box in memory:
+
+`age  →  25`
+
+Whenever we refer to `age`, JavaScript retrieves the value stored in that memory location.
+
+Variables make programs dynamic because their values can change during execution.
+
+> **Under the Hood (Memory Heap)**: When a variable is created (like `var name = "Rahul";`), the JavaScript engine allocates a Memory Address (e.g., `0x3F45`) in the heap and stores the value `"Rahul"`. The variable `name` is then pointed to that address so it can continually fetch the stored value.
+
+![Variables](../../assets/images/variables.png)
+
+## What is a Constant?
+
+A **constant** is a type of container similar to a variable, but with one critical difference: once a value is assigned to a constant, **it cannot be changed or reassigned**. Constants are used for values that must remain fixed throughout the execution of a program.
+
+For example:
+
+<div class="integrated-sandbox" data-code="const PI = 3.14159;\nconsole.log(&quot;The value of PI is:&quot;, PI);\n\ntry {\n    PI = 3.14;\n} catch (error) {\n    console.error(&quot;Error:&quot;, error.message);\n}">
+    <div class="sandbox-header">
+        <div class="sandbox-title">Snippet Sandbox: Constant Example</div>
+    </div>
+    <textarea class="sandbox-editor" spellcheck="false"></textarea>
+    <div class="sandbox-controls">
+        <button class="btn btn-secondary btn-reset">Reset</button>
+        <button class="btn btn-primary btn-run">Run Code</button>
+    </div>
+    <div class="sandbox-output">Console empty...</div>
+</div>
+
+## ES6 Variable Types
+
+JavaScript exposes three keywords to define variables: `var`, `let`, and `const`.
 
 *   **var:** The legacy keyword. Variables declared with `var` have functional or global scope and suffer from variable hoisting.
 *   **let:** Block-scoped variable declaration. The variable can be reassigned freely.
@@ -15,34 +73,20 @@ Variables serve as container values. JavaScript exposes three keywords to define
     <strong>Developer Insight:</strong> Avoid using <code>var</code>. Modern development practices dictate using <code>const</code> by default for most variables, and falling back to <code>let</code> only when you expect values to mutate.
 </div>
 
-### Reassigning Values Playground
+### `var`, `let`, and `const` Comparison
 
-Run the code below to see the difference between reassigning a variable declared with `let` versus a variable declared with `const`. Notice how the output console captures errors:
+| Feature | `var` | `let` | `const` |
+| :--- | :--- | :--- | :--- |
+| **Introduced In**| ES5 (Legacy) | ES6 (Modern) | ES6 (Modern) |
+| **Scope** | Function / Global | Block | Block |
+| **Reassignment** | ✅ Yes | ✅ Yes | ❌ No |
+| **Redeclaration** | ✅ Yes | ❌ No | ❌ No |
+| **Hoisting** | ✅ Yes (Initialized as `undefined`) | ✅ Yes (But in Temporal Dead Zone) | ✅ Yes (But in Temporal Dead Zone) |
 
-<div class="integrated-sandbox" data-code="let score = 100;\nscore = 120; // reassignment allowed\nconsole.log(&quot;Score is:&quot;, score);\n\nconst username = &quot;DevUser&quot;;\ntry {\n    username = &quot;Admin&quot;; // will fail!\n} catch(err) {\n    console.error(&quot;Failed const reassignment:&quot;, err.message);\n}">
-    <div class="sandbox-header">
-        <div class="sandbox-title">Snippet Sandbox: Constants Mutation</div>
-    </div>
-    <textarea class="sandbox-editor" spellcheck="false"></textarea>
-    <div class="sandbox-controls">
-        <button class="btn btn-secondary btn-reset">Reset</button>
-        <button class="btn btn-primary btn-run">Run Code</button>
-    </div>
-    <div class="sandbox-output">Console empty...</div>
-</div>
+### Key Term Definitions
 
-<h3>Block Scope vs Function Scope</h3>
+* **Reassignment:** The ability to give a variable a new value using the `=` operator after it has already been given a value.
+* **Redeclaration:** The ability to create a variable with the exact same name again in the same scope using `var`, `let`, or `const`.
+* **Hoisting:** JavaScript's default behavior of moving variable declarations up to the top of their scope before the code is executed.
 
-Variables declared inside curly braces using `let` or `const` are scoped exclusively within those braces. However, variables declared with `var` leak outside block statements:
-
-<div class="integrated-sandbox" data-code="if (true) {\n    var globalLeak = &quot;I can be accessed outside if statement!&quot;;\n    let localSecret = &quot;I am locked inside the block.&quot;;\n}\n\nconsole.log(globalLeak); // Prints correctly\n\ntry {\n    console.log(localSecret); // Fails!\n} catch(err) {\n    console.error(&quot;Error accessing block variable:&quot;, err.message);\n}">
-    <div class="sandbox-header">
-        <div class="sandbox-title">Snippet Sandbox: Scope Isolation</div>
-    </div>
-    <textarea class="sandbox-editor" spellcheck="false"></textarea>
-    <div class="sandbox-controls">
-        <button class="btn btn-secondary btn-reset">Reset</button>
-        <button class="btn btn-primary btn-run">Run Code</button>
-    </div>
-    <div class="sandbox-output">Console empty...</div>
-</div>
+> **Note:** The concepts of hoisting, temporal dead zone, and block scope will be explored in the upcoming section of Advanced JavaScript.

@@ -61,10 +61,11 @@ for (const note of sortedNotes) {
 			<!-- Sticky Sidebar Navigation Column -->
 			<aside class="docs-sidebar">
 				{Object.keys(categories)
-					.filter(catName => catName === 'Getting Started')
-					.map(catName => (
+					.filter(catName => ['Getting Started', 'Variables & Data Types'].includes(catName))
+					.map((catName) => {
+						return (
 						<div class="sidebar-category">
-							<h4>{catName}</h4>
+							<h4 style="color: var(--primary);">{catName}</h4>
 							<ul>
 								{categories[catName].map(noteItem => (
 									<li>
@@ -78,7 +79,8 @@ for (const note of sortedNotes) {
 								))}
 							</ul>
 						</div>
-					))}
+						);
+					})}
 			</aside>
 
 			<!-- Scrollable Note Content Viewport -->

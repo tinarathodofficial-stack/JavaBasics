@@ -1,21 +1,25 @@
 ---
-import { getCollection } from 'astro:content';
-
-const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
 
 const notes = await getCollection('notes');
 const sortedNotes = notes.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
-if (sortedNotes.length > 0) {
-	return Astro.redirect(`${baseUrl}${sortedNotes[0].id}`);
+const note = sortedNotes[0];
+let Content;
+if (note) {
+	const rendered = await render(note);
+	Content = rendered.Content;
 }
 ---
-<html>
-	<head>
-		<title>Loading Notes...</title>
-		<meta http-equiv="refresh" content={`0;url=${baseUrl}${sortedNotes[0]?.id || ''}`} />
-	</head>
-	<body>
-		<p>Redirecting to first chapter...</p>
-	</body>
-</html>
+
+{note && Content ? (
+	<Layout title={`${note.data.title} | JavaScript Basics`} currentSlug={note.id} description={note.data.description}>
+		<Content />
+	</Layout>
+) : (
+	<html>
+		<head><title>No Notes Found</title></head>
+		<body><p>No documentation notes are available yet.</p></body>
+	</html>
+)}
