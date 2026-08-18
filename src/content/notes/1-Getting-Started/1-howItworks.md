@@ -28,7 +28,7 @@ JavaScript allowed developers to add behaviors such as:
 *   Updating page layouts dynamically
 *   Handling direct user drag-and-drop actions
 
-![Browser JavaScript Execution Flow](../../assets/images/flow.png)
+![Browser JavaScript Execution Flow](../../../assets/images/flow.png)
 
 At that time, JavaScript could only run inside browsers because no standalone JavaScript runtime environment existed.
 
@@ -53,7 +53,7 @@ In 2009, software engineer Ryan Dahl introduced **Node.js**. Node.js is an open-
 
 Node.js made it possible to execute JavaScript directly on a computer or server without opening a web browser. This changed JavaScript from a browser-only scripting language into a complete programming language that could be used for backend development.
 
-![Browser to Node.js](../../assets/images/flow1.png)
+![Browser to Node.js](../../../assets/images/flow1.png)
 
 
 ## What Node.js Added
@@ -78,7 +78,7 @@ Because of these capabilities, JavaScript became suitable for building complete 
 | **Can Create Server** | ✘ No | ✔ Yes |
 | **Database Access** | Indirectly (through APIs) | Directly |
 
-![Complete Web Application Architecture](../../assets/images/flow2.png)
+![Complete Web Application Architecture](../../../assets/images/flow2.png)
 
 
 

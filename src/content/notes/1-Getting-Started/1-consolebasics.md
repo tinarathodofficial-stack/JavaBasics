@@ -30,7 +30,7 @@ After opening DevTools, navigate to the **Console** tab.
 
 The console acts as an interactive JavaScript environment. You can type JavaScript expressions and immediately see the result.
 
-![Browser Console](../../assets/images/console.png)
+![Browser Console](../../../assets/images/console.png)
 
 <div class="integrated-sandbox" data-code="console.log(2 + 3);">
     <div class="sandbox-header">

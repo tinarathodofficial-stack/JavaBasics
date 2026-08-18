@@ -27,7 +27,7 @@ Developers often use the console to experiment with small pieces of code, test J
 
 Since the code is executed immediately, it is an excellent environment for learning and understanding how JavaScript behaves.
 
-![Running JavaScript in Browser Console](../../assets/images/img1.png)
+![Running JavaScript in Browser Console](../../../assets/images/img1.png)
 
 ## 2. Running JavaScript Using the `<script>` Tag
 
@@ -39,7 +39,7 @@ This approach is known as **Internal JavaScript** because the JavaScript code is
 
 It is commonly used for learning basic concepts, creating small examples, or testing simple functionality.
 
-![Running JavaScript Using the script Tag](../../assets/images/img2.png)
+![Running JavaScript Using the script Tag](../../../assets/images/img2.png)
 
 ## 3. Running JavaScript Using an External File
 
@@ -51,7 +51,7 @@ When the browser loads the webpage, it downloads the external JavaScript file, e
 
 This approach is called **External JavaScript** and is the preferred method in modern web development because it improves code organization, readability, reusability, and maintainability.
 
-![Running JavaScript Using an External File](../../assets/images/img3.png)
+![Running JavaScript Using an External File](../../../assets/images/img3.png)
 
 ## Summary
 

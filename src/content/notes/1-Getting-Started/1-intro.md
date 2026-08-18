@@ -25,7 +25,7 @@ Think of them like building a house:
 *   **CSS** is the paint, furniture, decorations, and interior design.
 *   **JavaScript** is the electricity, switches, doors, security system, and appliances that make the house functional and interactive.
 
-![Web Technologies House Metaphor](../../assets/images/intro.png)
+![Web Technologies House Metaphor](../../../assets/images/intro.png)
 
 Without JavaScript, a webpage can display information, but it cannot intelligently respond to user actions.
 
@@ -63,7 +63,7 @@ JavaScript can perform countless tasks. Some of the most common include:
 
 Think about some websites you use every day:
 
-![Web Technologies Use Cases](../../assets/images/usecases.png)
+![Web Technologies Use Cases](../../../assets/images/usecases.png)
 
 *   When you **like a post on Instagram or Facebook**, JavaScript updates the like count instantly.
 *   When you **search on Google**, suggestions appear as you type.

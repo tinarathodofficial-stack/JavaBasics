@@ -41,7 +41,7 @@ Variables make programs dynamic because their values can change during execution
 
 > **Under the Hood (Memory Heap)**: When a variable is created (like `var name = "Rahul";`), the JavaScript engine allocates a Memory Address (e.g., `0x3F45`) in the heap and stores the value `"Rahul"`. The variable `name` is then pointed to that address so it can continually fetch the stored value.
 
-![Variables](../../assets/images/variables.png)
+![Variables](../../../assets/images/variables.png)
 
 ## What is a Constant?
 
@@ -88,5 +88,21 @@ JavaScript exposes three keywords to define variables: `var`, `let`, and `const`
 * **Reassignment:** The ability to give a variable a new value using the `=` operator after it has already been given a value.
 * **Redeclaration:** The ability to create a variable with the exact same name again in the same scope using `var`, `let`, or `const`.
 * **Hoisting:** JavaScript's default behavior of moving variable declarations up to the top of their scope before the code is executed.
+
+## Naming Rules and Best Practices
+
+When declaring variables, certain rules must be followed:
+
+### Rules
+* Names can contain letters, digits, underscores (`_`), and dollar signs (`$`).
+* Names cannot start with a number.
+* Names are case-sensitive.
+* Reserved keywords (like `let`, `const`, `if`) cannot be used.
+
+### Best Practices
+* Use meaningful names (e.g., `totalPrice` instead of `tp`).
+* Follow `camelCase` naming convention (for e.g. `firstName`, `lastName`).
+* Use `const` by default, and `let` only when reassignment is needed.
+* Avoid using `var` in modern development.
 
 > **Note:** The concepts of hoisting, temporal dead zone, and block scope will be explored in the upcoming section of Advanced JavaScript.
